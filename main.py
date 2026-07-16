@@ -1,16 +1,33 @@
-# This is a sample Python script.
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+from pydantic import BaseModel
+from calc.ops import add
 
-# Press Mayús+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+app = FastAPI(
+    title="Calculadora API y Presentación",
+    description="API de ejemplo con FastAPI usando uv para gestión de dependencias"
+)
 
+# Montar la carpeta static para servir la presentación y archivos
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+class AddRequest(BaseModel):
+    a: float
+    b: float
 
+@app.get("/")
+def read_root():
+    """
+    Sirve la página de inicio atractiva que permite descargar
+    la presentación (.pptx) y acceder a la API.
+    """
+    return FileResponse("static/index.html")
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+@app.post("/api/add")
+def api_add(req: AddRequest):
+    """
+    Suma dos números utilizando la lógica de negocio en calc.ops
+    """
+    result = add(req.a, req.b)
+    return {"a": req.a, "b": req.b, "result": result}
