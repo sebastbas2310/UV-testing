@@ -4,8 +4,15 @@ version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.14"
 dependencies = [
+    "certifi>=2026.6.17",
     "fastapi>=0.139.2",
     "httpx>=0.28.1",
     "httpx2>=2.7.0",
+    "mcp[cli]>=1.28.0",
     "pytest>=9.1.1",
+]
+
+[tool.uv.workspace]
+members = [
+    "weather-mcp",
 ]

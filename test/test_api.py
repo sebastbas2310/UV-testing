@@ -15,5 +15,5 @@ def test_api_add():
 
 def test_static_presentation():
     # Verifica que el archivo estático pptx esté disponible
-    response = client.get("/static/Github%20Actions.pptx")
+    response = client.get("/static/Github Actions.pptx")
     assert response.status_code == 200
